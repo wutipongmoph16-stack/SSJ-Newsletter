@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สรุปข่าว 1 หน้ากระดาษ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Sarabun', sans-serif; 
+            background-color: #f3f4f6; /* สีพื้นหลังเว็บ */
+        }
+        /* จำลองขนาดกระดาษ A4 */
+        .a4-paper {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 40px auto;
+            background: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 20mm; /* ระยะขอบกระดาษ */
+        }
+        
+        /* ตั้งค่าสำหรับการสั่ง Print หรือเซฟเป็น PDF */
+        @media print {
+            body { background-color: white; }
+            .a4-paper {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+                padding: 0; /* ตอนปริ้นจริงไม่ต้องมี Padding เผื่อเงา */
+            }
+            /* ซ่อนปุ่มต่างๆ เวลาสั่งปริ้น */
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+   <div class="text-center mt-8 no-print">
+        <button onclick="window.print()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 shadow-md font-semibold text-lg transition-colors">
+            🖨️ สั่งพิมพ์ / เซฟเป็น PDF
+        </button>
+   </div>
+
+   <div class="a4-paper flex flex-col justify-between">
+        
+        <div class="border-b-2 border-green-600 pb-4 mb-6 flex justify-between items-end">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">จดหมายข่าวสรุปกิจกรรม</h1>
+                <p class="text-gray-500 mt-1">ประจำวันที่ 25 มีนาคม 2569</p>
+            </div>
+            <div class="text-right">
+                <p class="font-semibold text-green-700">กลุ่มงานพัฒนายุทธศาสตร์สาธารณสุข</p>
+                <p class="text-sm text-gray-600">สำนักงานสาธารณสุขจังหวัดลพบุรี</p>
+            </div>
+        </div>
+
+        <div class="mb-6 flex-grow">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">สรุปประเด็นสำคัญจากการประชุมขับเคลื่อนนโยบาย</h2>
+            
+            <div class="columns-2 gap-8 text-gray-700 text-base text-justify leading-relaxed">
+                <p class="mb-3">นี่คือส่วนที่จะนำข้อความที่ AI (Gemini) ทำการสรุปแล้วมาวางครับ โดยจัดรูปแบบเป็น 2 คอลัมน์เพื่อให้อ่านง่ายเหมือนในหน้าหนังสือพิมพ์ หรือนิตยสาร ช่วยลดความเมื่อยล้าของสายตาเมื่อต้องอ่านข้อความยาวๆ ในหน้า A4</p>
+                <p class="mb-3">การพัฒนาระบบเทคโนโลยีสารสนเทศและการสื่อสาร ถือเป็นหัวใจสำคัญในการยกระดับคุณภาพการให้บริการ โครงการนี้มุ่งเน้นการสร้างแอปพลิเคชันที่สามารถลดขั้นตอนการทำงานของเจ้าหน้าที่ได้อย่างเป็นรูปธรรม</p>
+                <p>เพียงแค่อัปโหลดรูปภาพและเนื้อหาข่าวฉบับเต็ม ระบบจะทำการย่อความและจัดวาง Layout ให้โดยอัตโนมัติ ทำให้พร้อมสำหรับการสั่งพิมพ์ แจกจ่าย หรือส่งต่อในรูปแบบไฟล์ PDF บนช่องทางออนไลน์ เช่น LINE Official Account ของหน่วยงานได้ทันที</p>
+            </div>
+        </div>
+
+        <div class="mt-auto">
+            <h3 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-green-600 pl-3">ภาพบรรยากาศ (6 ภาพ)</h3>
+            
+            <div class="grid grid-cols-3 gap-4">
+                <img src="https://placehold.co/600x400/e2e8f0/475569?text=Image+1" class="w-full h-40 object-cover rounded-md shadow-sm" alt="ภาพประกอบ 1">
+                <img src="https://placehold.co/600x400/e2e8f0/475569?text=Image+2" class="w-full h-40 object-cover rounded-md shadow-sm" alt="ภาพประกอบ 2">
+                <img src="https://placehold.co/600x400/e2e8f0/475569?text=Image+3" class="w-full h-40 object-cover rounded-md shadow-sm" alt="ภาพประกอบ 3">
+                <img src="https://placehold.co/600x400/e2e8f0/475569?text=Image+4" class="w-full h-40 object-cover rounded-md shadow-sm" alt="ภาพประกอบ 4">
+                <img src="https://placehold.co/600x400/e2e8f0/475569?text=Image+5" class="w-full h-40 object-cover rounded-md shadow-sm" alt="ภาพประกอบ 5">
+                <img src="https://placehold.co/600x400/e2e8f0/475569?text=Image+6" class="w-full h-40 object-cover rounded-md shadow-sm" alt="ภาพประกอบ 6">
+            </div>
+        </div>
+
+   </div>
+</body>
+</html>
