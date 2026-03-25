@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบสร้างสรุปข่าว AI - หน้าอัปโหลด</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; background-color: #f0fdf4; } /* พื้นหลังสีเขียวอ่อนสบายตา */
+    </style>
+</head>
+<body class="min-h-screen py-10 px-4">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+        
+        <div class="bg-green-700 text-white p-6 text-center">
+            <h1 class="text-3xl font-bold mb-2">ระบบสรุปข่าวอัตโนมัติด้วย AI</h1>
+            <p class="text-green-100 font-medium">กลุ่มงานพัฒนายุทธศาสตร์สาธารณสุข | สำนักงานสาธารณสุขจังหวัดลพบุรี</p>
+        </div>
+
+        <div class="p-8">
+            <form action="#" method="POST" enctype="multipart/form-data" class="space-y-6">
+                
+                <div>
+                    <label class="block text-gray-700 text-lg font-bold mb-2" for="article_text">
+                        📝 1. วางเนื้อหาข่าวหรือบทความต้นฉบับ (ยาวแค่ไหนก็ได้)
+                    </label>
+                    <textarea id="article_text" name="article_text" rows="8" 
+                        class="w-full border border-gray-300 rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                        placeholder="วางเนื้อหาการประชุม รายงานกิจกรรม หรือบทความเต็มที่นี่... ระบบ AI จะทำการสรุปให้อัตโนมัติ"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 text-lg font-bold mb-2" for="images">
+                        📸 2. อัปโหลดรูปภาพกิจกรรม (แนะนำ 6-8 ภาพ)
+                    </label>
+                    <div class="flex items-center justify-center w-full">
+                        <label for="images" class="flex flex-col items-center justify-center w-full h-32 border-2 border-green-300 border-dashed rounded-lg cursor-pointer bg-green-50 hover:bg-green-100 transition-colors">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <svg class="w-10 h-10 mb-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                <p class="mb-2 text-sm text-gray-600"><span class="font-semibold">คลิกเพื่ออัปโหลด</span> หรือลากไฟล์มาวาง</p>
+                                <p class="text-xs text-gray-500">รองรับ PNG, JPG, JPEG (สูงสุด 8 ไฟล์)</p>
+                            </div>
+                            <input id="images" name="images" type="file" class="hidden" multiple accept="image/*" onchange="previewImages(event)" />
+                        </label>
+                    </div>
+                </div>
+
+                <div id="image_preview_container" class="hidden">
+                    <p class="text-gray-600 text-sm mb-2 font-semibold">ตัวอย่างรูปภาพที่เลือก:</p>
+                    <div id="image_preview" class="grid grid-cols-4 gap-4">
+                        </div>
+                </div>
+
+                <div class="pt-6 border-t border-gray-200 text-center">
+                    <button type="button" class="w-full md:w-auto px-10 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow-lg text-lg transition-transform transform hover:scale-105">
+                        ✨ สร้างใบสรุปข่าว 1 หน้ากระดาษ
+                    </button>
+                    <p class="text-sm text-gray-500 mt-3">ระบบจะใช้เวลาประมวลผลประมาณ 5-10 วินาที</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function previewImages(event) {
+            const previewContainer = document.getElementById('image_preview_container');
+            const preview = document.getElementById('image_preview');
+            preview.innerHTML = ''; // ล้างรูปเก่าออกก่อน
+            
+            const files = event.target.files;
+            
+            if (files.length > 0) {
+                previewContainer.classList.remove('hidden'); // แสดงกล่องพรีวิว
+                
+                // จำกัดให้แสดงแค่ 8 รูป
+                const maxFiles = Math.min(files.length, 8);
+                
+                for (let i = 0; i < maxFiles; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const imgDiv = document.createElement('div');
+                        imgDiv.className = 'relative group rounded-lg overflow-hidden border border-gray-200 shadow-sm aspect-video';
+                        imgDiv.innerHTML = `
+                            <img src="${e.target.result}" class="w-full h-full object-cover" alt="preview">
+                            <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-xs font-semibold">
+                                รูปที่ ${i+1}
+                            </div>
+                        `;
+                        preview.appendChild(imgDiv);
+                    }
+                    reader.readAsDataURL(file);
+                }
+
+                if(files.length > 8) {
+                    alert('คุณเลือกเกิน 8 รูป ระบบจะแสดงผลและใช้งานแค่ 8 รูปแรกนะครับ');
+                }
+            } else {
+                previewContainer.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
