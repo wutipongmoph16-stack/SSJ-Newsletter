@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทดลองสร้างภาพ AI ด้วย Pollinations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; background-color: #f0fdf4; }
+    </style>
+</head>
+<body class="min-h-screen py-10 px-4 flex justify-center items-center">
+
+    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+        
+        <div class="bg-green-700 text-white p-6 text-center">
+            <h1 class="text-3xl font-bold mb-2">🎨 ระบบสร้างภาพ AI (ใช้งานฟรี)</h1>
+            <p class="text-green-100 font-medium">ขับเคลื่อนโดย Pollinations.ai</p>
+        </div>
+
+        <div class="p-8 space-y-6">
+            
+            <div>
+                <label class="block text-gray-700 text-lg font-bold mb-2">
+                    พิมพ์คำอธิบายรูปภาพที่ต้องการ (ภาษาอังกฤษจะแม่นยำกว่า)
+                </label>
+                <div class="flex gap-2">
+                    <input type="text" id="promptInput" 
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        placeholder="เช่น: A smart doctor in a modern hospital, cinematic lighting"
+                        value="A smart doctor in a modern hospital, cinematic lighting">
+                    
+                    <button onclick="generateImage()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-colors whitespace-nowrap">
+                        ✨ สร้างรูปภาพ
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-2 bg-gray-50 min-h-[300px] flex flex-col justify-center items-center relative">
+                
+                <div id="loadingStatus" class="hidden text-center text-gray-500">
+                    <div class="inline-block animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-green-600 mb-3"></div>
+                    <p>AI กำลังวาดรูป... รอประมาณ 5-10 วินาทีครับ</p>
+                </div>
+
+                <img id="resultImage" src="" alt="AI Generated Image" class="hidden rounded-lg shadow-sm w-full h-auto object-contain max-h-[500px]">
+                
+                <p id="placeholderText" class="text-gray-400">รูปภาพจะแสดงที่นี่</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function generateImage() {
+            const prompt = document.getElementById('promptInput').value;
+            
+            if(!prompt) {
+                alert("กรุณาพิมพ์ข้อความอธิบายรูปภาพก่อนครับ");
+                return;
+            }
+
+            // เตรียม Element หน้าจอ
+            const loadingStatus = document.getElementById('loadingStatus');
+            const resultImage = document.getElementById('resultImage');
+            const placeholderText = document.getElementById('placeholderText');
+
+            // ซ่อนรูปเก่า โชว์หน้าโหลด
+            placeholderText.classList.add('hidden');
+            resultImage.classList.add('hidden');
+            loadingStatus.classList.remove('hidden');
+
+            // --- ส่วนสำคัญ: สร้าง URL สำหรับขอรูปจาก Pollinations ---
+            // เข้ารหัสข้อความ (Encode) เพื่อให้ส่งผ่าน URL ได้อย่างปลอดภัย
+            const encodedPrompt = encodeURIComponent(prompt);
+            
+            // สุ่มตัวเลข (Seed) เพื่อให้รูปที่ออกมากดกี่ครั้งก็ไม่ซ้ำกัน
+            const randomSeed = Math.floor(Math.random() * 1000000); 
+            
+            // ประกอบ URL (กำหนดขนาด width=800, height=500 และลบโลโก้ออก nologo=true)
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=800&height=500&nologo=true&seed=${randomSeed}`;
+
+            // นำ URL ไปใส่ในแท็ก <img src="...">
+            // เบราว์เซอร์จะทำการโหลดรูปภาพจาก URL นั้นอัตโนมัติ
+            resultImage.src = imageUrl;
+
+            // เมื่อรูปภาพโหลดเสร็จ ให้ซ่อนหน้าโหลด และโชว์รูปภาพ
+            resultImage.onload = function() {
+                loadingStatus.classList.add('hidden');
+                resultImage.classList.remove('hidden');
+            };
+            
+            // ดักจับกรณีเกิดข้อผิดพลาด (เช่น เน็ตหลุด)
+            resultImage.onerror = function() {
+                loadingStatus.classList.add('hidden');
+                placeholderText.classList.remove('hidden');
+                placeholderText.innerText = "เกิดข้อผิดพลาดในการโหลดรูปภาพ กรุณาลองใหม่อีกครั้ง";
+                placeholderText.classList.remove('text-gray-400');
+                placeholderText.classList.add('text-red-500');
+            };
+        }
+    </script>
+</body>
+</html>
